@@ -1,0 +1,12 @@
+<div class="home-container">
+  <h1>Nelly's bar staff management</h1>
+
+  <!-- Navigation buttons -->
+  <button routerLink="/tables" class="btn btn-primary">Go to Tables</button>
+  <button routerLink="/graphs" class="btn btn-primary">Go to Graphs</button>
+
+  <!-- Salary files depositery -->
+  <div>
+    <input type="file" (change)="onFileChange($event)" />
+  </div>
+</div>

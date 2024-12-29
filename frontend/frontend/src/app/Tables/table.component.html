@@ -1,0 +1,54 @@
+<!-- Ag Grid Table Setup -->
+<ag-grid-angular
+  class="ag-theme-quartz"
+  style="height: 480px; width: 100%;"
+  [rowData]="rows$"
+  [columnDefs]="colDefs"
+  (gridReady)="onGridReady($event)"
+  [domLayout]="'autoHeight'"
+></ag-grid-angular>
+
+<!-- Textblock to add an employee -->
+<div *ngIf="isAddEmployeeFormVisible">
+  <h3>Add an employee</h3>
+  <form (submit)="addEmployee()">
+    <label for="first_name">First Name:</label>
+    <input id="first_name" [(ngModel)]="newEmployee.first_name" name="first_name" required />
+
+    <label for="last_name">Last Name:</label>
+    <input id="last_name" [(ngModel)]="newEmployee.last_name" name="last_name" required />
+
+    <label for="salary">Salary:</label>
+    <input id="salary" type="number" [(ngModel)]="newEmployee.salary" name="salary" required />
+
+    <button type="submit">Add</button>
+    <button type="button" (click)="toggleAddEmployeeForm()">Cancel</button>
+  </form>
+</div>
+
+<!-- Textblocks to add a weekly performance -->
+<div *ngIf="isAddPerformanceFormVisible">
+  <h3>Add a weekly performance</h3>
+  <form (submit)="addPerformance()">
+    <label for="employee_id">ID Employee:</label>
+    <input id="employee_id" [(ngModel)]="newPerformance.employee_id" name="employee_id" required />
+
+    <label for="week">Week number:</label>
+    <input id="week" type="number" [(ngModel)]="newPerformance.week" name="week" required />
+
+    <label for="tips">Tips:</label>
+    <input id="tips" type="number" [(ngModel)]="newPerformance.tips" name="tips" required />
+
+    <label for="hour">Hours Worked in the week:</label>
+    <input id="hour" type="number" [(ngModel)]="newPerformance.hour" name="hour" required />
+
+    <button type="submit">Add</button>
+    <button type="button" (click)="toggleAddPerformanceForm()">Cancel</button>
+  </form>
+</div>
+
+<!-- Buttons -->
+<button (click)="toggleAddEmployeeForm()">Add an employee</button>
+<button (click)="deleteEmployee()">Delete an employee</button>
+<button (click)="toggleAddPerformanceForm()">Add a weekly performance</button>
+<button (click)="goBack()">Go Back</button>
