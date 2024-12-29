@@ -14,140 +14,121 @@ app.listen(3000, () => {
   console.log(`Server is running`);
 });
 
-// Connexion to Oracle and the sample database
+// Establishment of a mock database to use
 
-import oracledb from 'oracledb';
+let employees = [
+  { id: 1, first_name: 'Yannick', last_name: 'Dubois', salary: 1400 },
+  { id: 2, first_name: 'Valentin', last_name: 'Dupont', salary: 1700 },
+];
 
-async function Connect() {
-  try {
-    const connection = await oracledb.getConnection({
-      user: 'SYSTEM',
-      password: 'root',
-      connectString: 'localhost:1521/SYSTEM', // You need to replace these with your own password, username and connectstring
-    });
-    return connection;
-  } catch (err) {
-    console.error('Erreur de connexion à la base de données Oracle:', err);
-    throw err;
-  }
-}
 
-// Coding of different CRUD requests regarding the employees table and the weekly_performance table
+let weekly_performance = [
+  { id: 1, employee_id: 1, week: 1, tips: 31.0, hour: 35 },
+  { id: 2, employee_id: 1, week: 2, tips: 43.0, hour: 38 },
+  { id: 3, employee_id: 2, week: 1, tips: 18.0, hour: 20 },
+  { id: 4, employee_id: 2, week: 2, tips: 17.0, hour: 18 },
+];
 
-// Code to get the informations regarding an employee
-app.get('/employees', async (req, res) => {
-  try {
-    const connection = await Connect();
-    const result = await connection.execute('SELECT * FROM employees');
+// Get information of all employees
 
-    console.log('Query result:', result);  // Ajoute ce log pour afficher tout le résultat
-    res.json(result.rows); // Renvoie les lignes en JSON
-    await connection.close();
-  } catch (err) {
-    console.error('The employees do not exist', err);
-    res.status(500).send('The employees do not exist');
-  }
+app.get('/employees', (req, res) => {
+  res.json(employees);
 });
 
-//Code to add an employee
+// Adding an employee
 
-app.post('/employees', async (req, res) => {
+app.post('/employees', (req, res) => {
+  const { first_name, last_name, salary } = req.body;
+  const newEmployee = {
+    id: employees.length + 1, // Creation of a new ID for the new employee
+    first_name,
+    last_name,
+    salary,
+  };
+  employees.push(newEmployee);
+  res.status(201).json(newEmployee);
+});
+
+// 3. Updating an existing employee's profile
+
+app.put('/employees/:id', (req, res) => {
+  const { id } = req.params;
   const { first_name, last_name, salary } = req.body;
 
-  try {
-    const connection = await Connect();
-    const result = await connection.execute(
-        `INSERT INTO employees (first_name, last_name, salary)
-       VALUES (:first_name, :last_name, :salary)`,
-        [first_name, last_name, salary],
-        { autoCommit: true }
-    );
-    res.status(201).send('Employee added');
-    await connection.close();
-  } catch (err) {
-    console.error('The employee could not be added', err);
-    res.status(500).send('The employee could not be added');
+  const employeeIndex = employees.findIndex(emp => emp.id == id);
+  if (employeeIndex !== -1) {
+    employees[employeeIndex] = { id: Number(id), first_name, last_name, salary }; // Updates the employee
+    res.json(employees[employeeIndex]);
+  } else {
+    res.status(404).send('Employee not found');
   }
 });
 
-// Code to get the weekly_performance table values
+// Deleting an employee from the table
 
-app.get('/weekly_performance/:employeeId', async (req, res) => {
+app.delete('/employees/:id', (req, res) => {
+  const { id } = req.params;
+  const employeeIndex = employees.findIndex(emp => emp.id == id);
+  if (employeeIndex !== -1) {
+    const deletedEmployee = employees.splice(employeeIndex, 1);
+    res.json(deletedEmployee); // Prints the deleted empployee
+  } else {
+    res.status(404).send('Employee not found');
+  }
+});
+
+// Getting the weekly performances of an employee
+
+app.get('/weekly_performance/:employeeId', (req, res) => {
   const { employeeId } = req.params;
-
-  try {
-    const connection = await Connect();
-    const result = await connection.execute(
-        `SELECT * FROM weekly_performance WHERE employee_id = :employeeId`,
-        [employeeId]
-    );
-    res.json(result.rows); // Converting the employee's performance to the JSON format
-    await connection.close();
-  } catch (err) {
-    console.error('Could not fetch the weekly performances', err);
-    res.status(500).send('Could not fetch the weekly performances');
+  const performance = weeklyPerformance.filter(
+      performance => performance.employee_id == employeeId
+  );
+  if (performance.length > 0) {
+    res.json(performance);
+  } else {
+    res.status(404).send('No data on this employee');
   }
 });
 
-// Code to add a weekly performance of an employee
+// Add a weekly performance from an employee
+app.post('/weekly_performance', (req, res) => {
+  const { employee_id, week, tips, hour } = req.body;
+  const newPerformance = {
+    id: weeklyPerformance.length + 1, // Creates a new id
+    employee_id,
+    week,
+    tips,
+    hour,
+  };
+  weeklyPerformance.push(newPerformance);
+  res.status(201).json(newPerformance); // show the added performance
+});
 
-app.post('/weekly_performance', async (req, res) => {
+// Updating a weekly performance
+
+app.put('/weekly_performance/:id', (req, res) => {
+  const { id } = req.params;
   const { employee_id, week, tips, hour } = req.body;
 
-  try {
-    const connection = await Connect();
-    const result = await connection.execute(
-        `INSERT INTO weekly_performance (employee_id, week, tips, hour)
-       VALUES (:employee_id, :week, :tips, :hour)`,
-        [employee_id, week, tips, hour],
-        { autoCommit: true }
-    );
-    res.status(201).send('Weekly performances added successfully');
-    await connection.close();
-  } catch (err) {
-    console.error('Could not add weekly performance', err);
-    res.status(500).send('Could not add weekly performance');
+  const performanceIndex = weeklyPerformance.findIndex(perf => perf.id == id);
+  if (performanceIndex !== -1) {
+    weeklyPerformance[performanceIndex] = { id: Number(id), employee_id, week, tips, hour };
+    res.json(weeklyPerformance[performanceIndex]);
+  } else {
+    res.status(404).send('Performance not found');
   }
 });
 
-//Code to update an employee status
+// Delete a weekly performance
 
-app.put('/employees/:id', async (req, res) => {
+app.delete('/weekly_performance/:id', (req, res) => {
   const { id } = req.params;
-  const { first_name, last_name, salary } = req.body;
-
-  try {
-    const connection = await Connect();
-    const result = await connection.execute(
-        `UPDATE employees SET first_name = :first_name, last_name = :last_name, salary = :salary WHERE id = :id`,
-        [first_name, last_name, salary, id],
-        { autoCommit: true }
-    );
-    res.send('Employee profile successfully updated');
-    await connection.close();
-  } catch (err) {
-    console.error('Could not update the employee profile', err);
-    res.status(500).send('Could not update the employee profile');
+  const performanceIndex = weeklyPerformance.findIndex(perf => perf.id == id);
+  if (performanceIndex !== -1) {
+    const deletedPerformance = weeklyPerformance.splice(performanceIndex, 1);
+    res.json(deletedPerformance);
+  } else {
+    res.status(404).send('Performance not found');
   }
 });
-
-// Code pour supprimer un employé
-
-app.delete('/employees/:id', async (req, res) => {
-  const { id } = req.params;
-
-  try {
-    const connection = await Connect();
-    const result = await connection.execute(
-        `DELETE FROM employees WHERE id = :id`,
-        [id],
-        { autoCommit: true }
-    );
-    res.send('Employee successfully deleted');
-    await connection.close();
-  } catch (err) {
-    console.error('Employee could not be deleted', err);
-    res.status(500).send('Employee could not be deleted');
-  }
-});
-
