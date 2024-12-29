@@ -39,7 +39,9 @@ app.get('/employees', async (req, res) => {
   try {
     const connection = await Connect();
     const result = await connection.execute('SELECT * FROM employees');
-    res.json(result.rows); // Converting the employees to JSON
+
+    console.log('Query result:', result);  // Ajoute ce log pour afficher tout le résultat
+    res.json(result.rows); // Renvoie les lignes en JSON
     await connection.close();
   } catch (err) {
     console.error('The employees do not exist', err);
