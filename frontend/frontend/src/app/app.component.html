@@ -1,12 +1,23 @@
+<!-- Navbar with Bootstrap -->
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <a class="navbar-brand" href="#">Kelly's Bar Staff Management</a>
+  <ul class="navbar-nav mr-auto">
+    <li class="nav-item">
+      <a class="nav-link" routerLink="/home">Home</a> <!-- Link to Home -->
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" routerLink="/table">Table</a> <!-- Link to Table -->
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" routerLink="/graph">Graph</a> <!-- Link to Graph -->
+    </li>
+  </ul>
+</nav>
 
-<div class="app-container">
-  <nav>
-    <ul>
-      <li><a routerLink="/home">Home</a></li>
-      <li><a routerLink="/graph">Graph</a></li>
-      <li><a routerLink="/table">Table</a></li>
-    </ul>
-  </nav>
-  <router-outlet></router-outlet>
-</div>
+<!-- The router-outlet is where your components will be displayed -->
+<router-outlet></router-outlet>
+
+<!-- Optional link to go back to home -->
+<br/>
+<a routerLink="/home">Go to Home</a>
 

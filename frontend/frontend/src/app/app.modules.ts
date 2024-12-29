@@ -2,11 +2,13 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
-import { AppComponent } from './app.component';
+import { RouterModule } from '@angular/router';
 
+
+import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
-import { TableComponent } from './table/table.component';
-import { GraphComponent } from './graph/graph.component';
+import { TableComponent } from './Table/table.component';
+import { GraphComponent } from './Graph/graph.component';
 import { AgGridAngular } from 'ag-grid-angular'; // Import de AG-Grid
 
 @NgModule({
@@ -19,7 +21,9 @@ import { AgGridAngular } from 'ag-grid-angular'; // Import de AG-Grid
   imports: [
     BrowserModule,
     AppRoutingModule,
-    AgGridAngular
+    RouterModule,
+    AgGridAngular,
+    AppComponent
   ],
   providers: [],
   bootstrap: [AppComponent]
