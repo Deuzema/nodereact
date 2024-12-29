@@ -6,7 +6,7 @@ import { RouterModule } from '@angular/router';
 
 
 import { AppComponent } from './app.component';
-import { HomeComponent } from './home/home.component';
+import { HomeComponent } from './Home/home.component';
 import { TableComponent } from './Table/table.component';
 import { GraphComponent } from './Graph/graph.component';
 import { AgGridAngular } from 'ag-grid-angular'; // Import de AG-Grid
