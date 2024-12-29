@@ -1,0 +1,7 @@
+https://github.com/node-fetch/node-fetch
+https://stackoverflow.com/questions/50320941/ag-grid-in-angular-does-not-refresh-when-rowdata-is-changed
+https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/async_function
+https://stackoverflow.com/questions/71970966/asynchronous-crud-operations-with-express
+https://docs.oracle.com/en/database/other-databases/nosql-database/21.2/sqlreferencefornosql/creating-tables-identity-column.html
+https://www.jetbrains.com/help/idea/oracle.html#connect-to-oracle-database
+https://expressjs.com/en/guide/routing.html
