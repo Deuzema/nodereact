@@ -5,9 +5,10 @@ import { TableComponent } from './table/table.component';
 import { GraphComponent } from './graph/graph.component';
 
 const routes: Routes = [
-  { path: '', component: HomeComponent }, // Welcome page
-  { path: 'tables', component: TableComponent }, // Tables page
-  { path: 'graphs', component: GraphComponent }  // Page with the stats of employees
+  { path: 'home', component: HomeComponent },
+  { path: 'table', component: TableComponent },
+  { path: 'graph', component: GraphComponent },
+  { path: '', redirectTo: '/home', pathMatch: 'full' }, // Redirection par défaut
 ];
 
 @NgModule({
