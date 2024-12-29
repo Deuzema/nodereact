@@ -4,6 +4,7 @@
   style="height: 480px; width: 100%;"
   [rowData]="rows$"
   [columnDefs]="colDefs"
+  (rowClicked)="selectEmployee($event.data)"
   (gridReady)="onGridReady($event)"
   [domLayout]="'autoHeight'"
 ></ag-grid-angular>
@@ -87,6 +88,18 @@
     </div>
     <button type="submit">Modify</button>
   </form>
+</div>
+
+//Allow the user to cancel their selection
+
+<div *ngIf="selectedEmployee">
+  <h3>Editing Employee: {{ selectedEmployee.first_name }} {{ selectedEmployee.last_name }}</h3>
+  <button (click)="selectedEmployee = null">Cancel</button>
+</div>
+
+<div *ngIf="selectedPerformance">
+  <h3>Editing Performance for Employee ID: {{ selectedPerformance.employee_id }}</h3>
+  <button (click)="selectedPerformance = null">Cancel</button>
 </div>
 
 <!-- Buttons -->

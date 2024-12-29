@@ -35,6 +35,9 @@ export class TableComponent implements OnInit {
 
   newEmployee: Employee = {id: 0, first_name: '', last_name: '', salary: 0};
   newPerformance: WeeklyPerformance = {id: 0, employee_id: 0, week: 0, tips: 0, hour: 0};
+  selectedEmployee: Employee | null = null;
+  selectedPerformance: WeeklyPerformance | null = null;
+
 
   isAddEmployeeFormVisible = false;
   isAddPerformanceFormVisible = false;
@@ -48,6 +51,13 @@ export class TableComponent implements OnInit {
 
   onGridReady(params: GridReadyEvent) {
     this.gridApi = params.api;
+  }
+
+  selectEmployee(employee: Employee) {
+    this.selectedEmployee = { ...employee };
+
+  selectPerformance(performance: WeeklyPerformance) {
+    this.selectedPerformance = { ...performance };
   }
 
   fetchEmployees() {
@@ -101,25 +111,25 @@ export class TableComponent implements OnInit {
     if (!this.selectedEmployee) {
       return;
     }
-    this.http.put(`${environment.apiUrl}/employees/${this.selectedEmployee.id}`, this.selectedEmployee)
-      .subscribe((response) => {
-        console.log('Employee updated', response);
-        // Actualise the table
-      });
-    goBack()
-    {
-      this.router.navigate(['/']);
-    }
-  }
-
-  updatePerformance() {
-    if (this.selectedPerformance) {
-      this.http.put(`/api/weekly_performance/${this.selectedPerformance.id}`, this.selectedPerformance)
+      this.http.put(`http://localhost:3000/employees/${this.selectedEmployee.id}`, this.selectedEmployee)
         .subscribe((response) => {
-          console.log('Performance updated', response);
-          // Actualise the performances
+          console.log('Employee updated', response);
+
+          // Met à jour la liste des employés après modification
+          this.fetchEmployees();
+          this.selectedEmployee = null; // Réinitialise après l'édition
         });
     }
-  }
 
-}
+  updatePerformance() {
+      if (!this.selectedPerformance) {
+        return;
+      }
+      this.http.put(`http://localhost:3000/weekly_performance/${this.selectedPerformance.id}`, this.selectedPerformance)
+        .subscribe((response) => {
+          console.log('Performance updated', response);
+
+          // Réinitialise après l'édition
+          this.selectedPerformance = null;
+        });
+    }
