@@ -55,7 +55,7 @@ app.put('/employees/:id', (req, res) => {
   const { id } = req.params;
   const { first_name, last_name, salary } = req.body;
 
-  const employeeIndex = employees.findIndex(emp => emp.id == id);
+  const employeeIndex = employees.findIndex(emp => emp.id == Number(id));
   if (employeeIndex !== -1) {
     employees[employeeIndex] = { id: Number(id), first_name, last_name, salary }; // Updates the employee
     res.json(employees[employeeIndex]);
@@ -68,7 +68,7 @@ app.put('/employees/:id', (req, res) => {
 
 app.delete('/employees/:id', (req, res) => {
   const { id } = req.params;
-  const employeeIndex = employees.findIndex(emp => emp.id == id);
+  const employeeIndex = employees.findIndex(emp => emp.id == Number(id));
   if (employeeIndex !== -1) {
     const deletedEmployee = employees.splice(employeeIndex, 1);
     res.json(deletedEmployee); // Prints the deleted empployee
@@ -81,8 +81,8 @@ app.delete('/employees/:id', (req, res) => {
 
 app.get('/weekly_performance/:employeeId', (req, res) => {
   const { employeeId } = req.params;
-  const performance = weeklyPerformance.filter(
-      performance => performance.employee_id == employeeId
+  const performance = weekly_performance.filter(
+      performance => performance.employee_id == Number(employeeId)
   );
   if (performance.length > 0) {
     res.json(performance);
@@ -95,13 +95,13 @@ app.get('/weekly_performance/:employeeId', (req, res) => {
 app.post('/weekly_performance', (req, res) => {
   const { employee_id, week, tips, hour } = req.body;
   const newPerformance = {
-    id: weeklyPerformance.length + 1, // Creates a new id
+    id: weekly_performance.length + 1, // Creates a new id
     employee_id,
     week,
     tips,
     hour,
   };
-  weeklyPerformance.push(newPerformance);
+  weekly_performance.push(newPerformance);
   res.status(201).json(newPerformance); // show the added performance
 });
 
@@ -111,10 +111,10 @@ app.put('/weekly_performance/:id', (req, res) => {
   const { id } = req.params;
   const { employee_id, week, tips, hour } = req.body;
 
-  const performanceIndex = weeklyPerformance.findIndex(perf => perf.id == id);
+  const performanceIndex = weekly_performance.findIndex(perf => perf.id == Number(id));
   if (performanceIndex !== -1) {
-    weeklyPerformance[performanceIndex] = { id: Number(id), employee_id, week, tips, hour };
-    res.json(weeklyPerformance[performanceIndex]);
+    weekly_performance[performanceIndex] = { id: Number(id), employee_id, week, tips, hour };
+    res.json(weekly_performance[performanceIndex]);
   } else {
     res.status(404).send('Performance not found');
   }
@@ -124,9 +124,9 @@ app.put('/weekly_performance/:id', (req, res) => {
 
 app.delete('/weekly_performance/:id', (req, res) => {
   const { id } = req.params;
-  const performanceIndex = weeklyPerformance.findIndex(perf => perf.id == id);
+  const performanceIndex = weekly_performance.findIndex(perf => perf.id == Number(id));
   if (performanceIndex !== -1) {
-    const deletedPerformance = weeklyPerformance.splice(performanceIndex, 1);
+    const deletedPerformance = weekly_performance.splice(performanceIndex, 1);
     res.json(deletedPerformance);
   } else {
     res.status(404).send('Performance not found');
