@@ -96,7 +96,28 @@ export class TablesComponent implements OnInit {
     }
   }
 
-  goBack() {
-    this.router.navigate(['/']);
+  updateEmployee() {
+    if (!this.selectedEmployee) {
+      return;
+    }
+    this.http.put(`${environment.apiUrl}/employees/${this.selectedEmployee.id}`, this.selectedEmployee)
+      .subscribe((response) => {
+        console.log('Employee updated', response);
+        // Actualise the table
+      });
+    goBack()
+    {
+      this.router.navigate(['/']);
+    }
   }
-}
+
+  updatePerformance() {
+    if (this.selectedPerformance) {
+      this.http.put(`/api/weekly_performance/${this.selectedPerformance.id}`, this.selectedPerformance)
+        .subscribe((response) => {
+          console.log('Performance updated', response);
+          // Actualise the performances
+        });
+    }
+  }
+

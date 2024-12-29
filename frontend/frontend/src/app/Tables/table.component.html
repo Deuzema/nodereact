@@ -47,6 +47,48 @@
   </form>
 </div>
 
+<!-- Textblocks to modify an employee -->
+
+<div *ngIf="selectedEmployee">
+  <h2>Modify an employee</h2>
+  <form (submit)="updateEmployee()">
+    <div>
+      <label for="first_name">First Name</label>
+      <input type="text" [(ngModel)]="selectedEmployee.first_name" id="first_name" placeholder="Prénom" name="first_name" required />
+    </div>
+    <div>
+      <label for="last_name">Last Name</label>
+      <input type="text" [(ngModel)]="selectedEmployee.last_name" id="last_name" placeholder="Nom" name="last_name" required />
+    </div>
+    <div>
+      <label for="salary">Salary</label>
+      <input type="number" [(ngModel)]="selectedEmployee.salary" id="salary" placeholder="Salaire" name="salary" required />
+    </div>
+    <button type="submit">Modify</button>
+  </form>
+</div>
+
+<!-- Textblocks to modify a weekly performance -->
+
+<div *ngIf="selectedPerformance">
+  <h2>Modify the weekly performance</h2>
+  <form (submit)="updatePerformance()">
+    <div>
+      <label for="week">Week</label>
+      <input type="number" [(ngModel)]="selectedPerformance.week" id="week" placeholder="Semaine" name="week" required />
+    </div>
+    <div>
+      <label for="tips">Tips</label>
+      <input type="number" [(ngModel)]="selectedPerformance.tips" id="tips" placeholder="Pourboires" name="tips" required />
+    </div>
+    <div>
+      <label for="hour">Hours</label>
+      <input type="number" [(ngModel)]="selectedPerformance.hour" id="hour" placeholder="Heures" name="hour" required />
+    </div>
+    <button type="submit">Modify</button>
+  </form>
+</div>
+
 <!-- Buttons -->
 <button (click)="toggleAddEmployeeForm()">Add an employee</button>
 <button (click)="deleteEmployee()">Delete an employee</button>
