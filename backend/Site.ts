@@ -16,6 +16,8 @@ app.listen(3000, () => {
 
 // Connexion to Oracle and the sample database
 
+import oracledb from 'oracledb';
+
 async function Connect() {
   try {
     const connection = await oracledb.getConnection({
@@ -91,7 +93,7 @@ app.post('/weekly_performance', async (req, res) => {
   const { employee_id, week, tips, hour } = req.body;
 
   try {
-    const connection = Connect();
+    const connection = await Connect();
     const result = await connection.execute(
         `INSERT INTO weekly_performance (employee_id, week, tips, hour)
        VALUES (:employee_id, :week, :tips, :hour)`,
