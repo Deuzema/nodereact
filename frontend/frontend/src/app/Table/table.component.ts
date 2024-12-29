@@ -20,26 +20,27 @@ interface WeeklyPerformance {
 }
 
 @Component({
-  selector: 'app-tables',
-  templateUrl: './tables.component.html',
+  selector: 'app-table',
+  templateUrl: './table.component.html',
 })
-export class TablesComponent implements OnInit {
+export class TableComponent implements OnInit {
   private gridApi!: GridApi;
   rows$: Employee[] = [];
   colDefs: ColDef[] = [
-    { headerName: 'ID', field: 'id' },
-    { headerName: 'First Name', field: 'first_name' },
-    { headerName: 'Last Name', field: 'last_name' },
-    { headerName: 'Salary', field: 'salary' },
+    {headerName: 'ID', field: 'id'},
+    {headerName: 'First Name', field: 'first_name'},
+    {headerName: 'Last Name', field: 'last_name'},
+    {headerName: 'Salary', field: 'salary'},
   ];
 
-  newEmployee: Employee = { id: 0, first_name: '', last_name: '', salary: 0 };
-  newPerformance: WeeklyPerformance = { id: 0, employee_id: 0, week: 0, tips: 0, hour: 0 };
+  newEmployee: Employee = {id: 0, first_name: '', last_name: '', salary: 0};
+  newPerformance: WeeklyPerformance = {id: 0, employee_id: 0, week: 0, tips: 0, hour: 0};
 
   isAddEmployeeFormVisible = false;
   isAddPerformanceFormVisible = false;
 
-  constructor(private http: HttpClient, private router: Router) {}
+  constructor(private http: HttpClient, private router: Router) {
+  }
 
   ngOnInit(): void {
     this.fetchEmployees();
@@ -68,20 +69,20 @@ export class TablesComponent implements OnInit {
   }
 
   addEmployee() {
-    const newEmployee = { ...this.newEmployee };
+    const newEmployee = {...this.newEmployee};
     this.http.post('http://localhost:3000/employees', newEmployee).subscribe((employee: Employee) => {
       this.rows$.push(employee);
       this.gridApi.setRowData(this.rows$);
       this.toggleAddEmployeeForm(); // Hides the textblock after adding an employee
-      this.newEmployee = { id: 0, first_name: '', last_name: '', salary: 0 }; // This resets the textblock
+      this.newEmployee = {id: 0, first_name: '', last_name: '', salary: 0}; // This resets the textblock
     });
   }
 
   addPerformance() {
-    const performance = { ...this.newPerformance };
+    const performance = {...this.newPerformance};
     this.http.post('http://localhost:3000/weekly_performance', performance).subscribe((performance: WeeklyPerformance) => {
       this.toggleAddPerformanceForm(); // Hides the textblock after adding a weekly performance
-      this.newPerformance = { id: 0, employee_id: 0, week: 0, tips: 0, hour: 0 }; // Resets the textblock
+      this.newPerformance = {id: 0, employee_id: 0, week: 0, tips: 0, hour: 0}; // Resets the textblock
     });
   }
 
@@ -121,3 +122,4 @@ export class TablesComponent implements OnInit {
     }
   }
 
+}
