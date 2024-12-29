@@ -5,7 +5,7 @@ import { TableComponent } from './table/table.component';
 import { GraphComponent } from './graph/graph.component';
 
 const routes: Routes = [
-  { path: '', component: HomeComponent }, // Page d'accueil par défaut
+  { path: '', redirectTo: '/home', pathMatch: 'full' }
   { path: 'home', component: HomeComponent },
   { path: 'graph', component: GraphComponent },
   { path: 'table', component: TableComponent },
