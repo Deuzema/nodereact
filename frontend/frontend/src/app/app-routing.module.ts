@@ -5,10 +5,10 @@ import { TableComponent } from './table/table.component';
 import { GraphComponent } from './graph/graph.component';
 
 const routes: Routes = [
+  { path: '', component: HomeComponent }, // Page d'accueil par défaut
   { path: 'home', component: HomeComponent },
-  { path: 'table', component: TableComponent },
   { path: 'graph', component: GraphComponent },
-  { path: '', redirectTo: '/home', pathMatch: 'full' }, // Redirection par défaut
+  { path: 'table', component: TableComponent },
 ];
 
 @NgModule({
